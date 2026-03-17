@@ -24,8 +24,8 @@ class Test_001_Login:
     username= "admin@yourstore.com"
     password= "admin"
 
-    def test_homepage_Title(self):
-        self.driver = webdriver.Chrome()
+    def test_homepage_Title(self,setup):
+        self.driver = setup
         self.driver.get(self.baseURL)
         act_title = self.driver.title
         assert "nopCommerce demo store. Login" in act_title
@@ -35,10 +35,21 @@ class Test_001_Login:
         self.log.setusername(self.username)
         self.log.setpassword(self.password)
         self.log.login()
+        login_title=self.driver.title
+        if login_title=="Dashboard / nopCommerce administration fiyr":
+            assert True
+            self.driver.close()
+        else:
+            self.driver.save_screenshot(".\\Screenshots\\"+"test_home_pageTitle.png")
+            self.driver.close()
+            assert False
+        self.driver.quit()
 
-    def teardown_method(self, method):
-        if hasattr(self, "driver") and self.driver:
-            try:
-                self.driver.quit()
-            except Exception:
-                pass
+
+
+    # def teardown_method(self, method):
+    #     if hasattr(self, "driver") and self.driver:
+    #         try:
+    #             self.driver.quit()
+    #         except Exception:
+    #             pass
